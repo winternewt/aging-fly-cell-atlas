@@ -1,0 +1,40 @@
+[project]
+name = "aging-fly-cell-atlas"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.9.22"
+dependencies = [
+    "cellhint>=1.0.0",
+    "celltypist>=1.6.3",
+    "geoparse>=2.0.4",
+    "huggingface-hub>=0.33.0",
+    "jax[cpu]>=0.4.30",
+    "matplotlib>=3.9.4",
+    "mygene>=3.2.2",
+    "numpy>=2.0.2",
+    "pandas>=2.3.0",
+    "pyarrow>=20.0.0",
+    "pybiomart>=0.2.0",
+    "scanpy>=1.10.3",
+    "scvi>=0.6.8",
+    "seaborn>=0.13.2",
+    "torch>=2.7.1",
+    "typer>=0.16.0",
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
+]
+torchvision = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
