@@ -26,15 +26,24 @@ def get_files_to_upload(base_path: Path) -> List[tuple[Path, str]]:
     # Processed data files
     processed_dir = base_path / "processed"
     
-    # Core dataset files (head dataset only - body is WIP)
+    # Core dataset files (complete head and body datasets)
     core_patterns = [
+        # HEAD TISSUE
         "aging_fly_head_expression.parquet",
         "aging_fly_head_sample_metadata.parquet", 
         "aging_fly_head_feature_metadata.parquet",
         "aging_fly_head_projection_X_pca.parquet",
         "aging_fly_head_projection_X_tsne.parquet",
         "aging_fly_head_projection_X_umap.parquet",
-        "aging_fly_head_unstructured_metadata.json"
+        "aging_fly_head_unstructured_metadata.json",
+        # BODY TISSUE
+        "aging_fly_body_expression.parquet",
+        "aging_fly_body_sample_metadata.parquet", 
+        "aging_fly_body_feature_metadata.parquet",
+        "aging_fly_body_projection_X_pca.parquet",
+        "aging_fly_body_projection_X_tsne.parquet",
+        "aging_fly_body_projection_X_umap.parquet",
+        "aging_fly_body_unstructured_metadata.json"
     ]
     
     # Additional metadata files for completeness
@@ -125,7 +134,7 @@ def upload_dataset(
     print(f"📁 Base path: {base_path}")
     print(f"🎯 Repository: {repo_id}")
     print(f"📊 Files to upload: {len(files_to_upload)}")
-    print("🧬 Dataset: Aging Fly Cell Atlas (Head dataset only - Body WIP)")
+    print("🧬 Dataset: Aging Fly Cell Atlas (Complete head and body datasets)")
     print()
     
     # Show files categorized by type
@@ -147,7 +156,7 @@ def upload_dataset(
             doc_files.append((repo_path, size_mb))
     
     # Display file inventory
-    print("🗂️  **CORE DATASET FILES** (Head tissue only):")
+    print("🗂️  **CORE DATASET FILES** (Head and Body tissues):")
     total_core_size = 0
     for filename, size_mb in core_files:
         total_core_size += size_mb
@@ -241,22 +250,31 @@ def check_completeness():
     base_path = Path(".").resolve()
     processed_dir = base_path / "processed"
     
-    # Required files for complete dataset (head only)
+    # Required files for complete dataset (head and body)
     required_files = {
-        "aging_fly_head_expression.parquet": "Head expression matrix (~290K cells)",
+        # HEAD TISSUE
+        "aging_fly_head_expression.parquet": "Head expression matrix (290K cells)",
         "aging_fly_head_sample_metadata.parquet": "Head cell metadata",
-        "aging_fly_head_feature_metadata.parquet": "Gene annotations", 
-        "aging_fly_head_projection_X_pca.parquet": "PCA embeddings (50D)",
-        "aging_fly_head_projection_X_tsne.parquet": "t-SNE visualization (2D)",
-        "aging_fly_head_projection_X_umap.parquet": "UMAP visualization (2D)",
-        "aging_fly_head_unstructured_metadata.json": "Processing metadata"
+        "aging_fly_head_feature_metadata.parquet": "Head gene annotations", 
+        "aging_fly_head_projection_X_pca.parquet": "Head PCA embeddings",
+        "aging_fly_head_projection_X_tsne.parquet": "Head t-SNE visualization",
+        "aging_fly_head_projection_X_umap.parquet": "Head UMAP visualization",
+        "aging_fly_head_unstructured_metadata.json": "Head processing metadata",
+        # BODY TISSUE
+        "aging_fly_body_expression.parquet": "Body expression matrix (276K cells)",
+        "aging_fly_body_sample_metadata.parquet": "Body cell metadata",
+        "aging_fly_body_feature_metadata.parquet": "Body gene annotations", 
+        "aging_fly_body_projection_X_pca.parquet": "Body PCA embeddings",
+        "aging_fly_body_projection_X_tsne.parquet": "Body t-SNE visualization",
+        "aging_fly_body_projection_X_umap.parquet": "Body UMAP visualization",
+        "aging_fly_body_unstructured_metadata.json": "Body processing metadata"
     }
     
     documentation_files = {
         "README.md": "Dataset card with YAML config"
     }
     
-    print("📊 **REQUIRED DATA FILES** (Head dataset):")
+    print("📊 **REQUIRED DATA FILES** (Head and Body datasets):")
     missing_core = []
     for filename, description in required_files.items():
         file_path = processed_dir / filename
@@ -306,15 +324,15 @@ def check_completeness():
     total_missing = len(missing_core) + len(missing_docs)
     completion_rate = ((total_required - total_missing) / total_required) * 100
     
-    print(f"\n🎯 **COMPLETION SUMMARY** (Head dataset):")
+    print(f"\n🎯 **COMPLETION SUMMARY** (Complete dataset):")
     print(f"   📊 Required files: {total_required}")
     print(f"   ✅ Present: {total_required - total_missing}")
     print(f"   ❌ Missing: {total_missing}")
     print(f"   📈 Completion rate: {completion_rate:.1f}%")
     
     if total_missing == 0:
-        print(f"\n🏆 **UPLOAD READY!** All required head dataset files present.")
-        print(f"    📝 Note: Body dataset is WIP and will be added in future release")
+        print(f"\n🏆 **UPLOAD READY!** All required files present for complete dataset.")
+        print(f"    📝 Note: Both head and body datasets fully processed and ready!")
     else:
         print(f"\n⚠️  **MISSING FILES** - Upload readiness: {completion_rate:.1f}%")
         if missing_core:

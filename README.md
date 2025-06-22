@@ -16,32 +16,46 @@ size_categories:
 language:
 - en
 
-# Dataset configurations - Head dataset only (Body dataset WIP)
+# Dataset configurations - Complete head and body datasets
 configs:
 - config_name: default
   data_files:
-    - split: expression
+    - split: head_expression
       path: "aging_fly_head_expression.parquet"
-    - split: sample_metadata
+    - split: head_sample_metadata
       path: "aging_fly_head_sample_metadata.parquet"
-    - split: feature_metadata
+    - split: head_feature_metadata
       path: "aging_fly_head_feature_metadata.parquet"
-    - split: projection_pca
+    - split: head_projection_pca
       path: "aging_fly_head_projection_X_pca.parquet"
-    - split: projection_tsne
+    - split: head_projection_tsne
       path: "aging_fly_head_projection_X_tsne.parquet"  
-    - split: projection_umap
+    - split: head_projection_umap
       path: "aging_fly_head_projection_X_umap.parquet"
+    - split: body_expression
+      path: "aging_fly_body_expression.parquet"
+    - split: body_sample_metadata
+      path: "aging_fly_body_sample_metadata.parquet"
+    - split: body_feature_metadata
+      path: "aging_fly_body_feature_metadata.parquet"
+    - split: body_projection_pca
+      path: "aging_fly_body_projection_X_pca.parquet"
+    - split: body_projection_tsne
+      path: "aging_fly_body_projection_X_tsne.parquet"
+    - split: body_projection_umap
+      path: "aging_fly_body_projection_X_umap.parquet"
 
 - config_name: metadata_json
   data_files:
-    - split: unstructured_metadata
+    - split: head_unstructured_metadata
       path: "aging_fly_head_unstructured_metadata.json"
+    - split: body_unstructured_metadata
+      path: "aging_fly_body_unstructured_metadata.json"
 ---
 
-# 🧬 Aging Fly Cell Atlas (AFCA) - Head Dataset (Body WIP)
+# 🧬 Aging Fly Cell Atlas (AFCA) - Complete Dataset
 
-> **Comprehensive single-nucleus transcriptomic atlas of aging in Drosophila melanogaster head tissue for longevity research and machine learning applications**
+> **Comprehensive single-nucleus transcriptomic atlas of aging in Drosophila melanogaster covering both head and body tissues for longevity research and machine learning applications**
 
 [![Dataset](https://img.shields.io/badge/🤗%20Dataset-Aging%20Fly%20Cell%20Atlas-blue)](https://huggingface.co/datasets/longevity-gpt/aging-fly-cell-atlas)
 [![Paper](https://img.shields.io/badge/📖%20Paper-Science%202023-red)](https://www.science.org/doi/10.1126/science.adg0934)
@@ -57,42 +71,50 @@ configs:
 
 This dataset provides the most comprehensive single-nucleus transcriptomic atlas of aging in _Drosophila melanogaster_, covering the entire organism across the lifespan. The Aging Fly Cell Atlas (AFCA) enables unprecedented insights into cellular aging, longevity mechanisms, and age-related disease processes.
 
-### Key Features (Head Dataset)
-- **~290,000 single nuclei** from fly head tissue (Body dataset: WIP)
-- **40 distinct head cell types** with detailed annotations  
+### Key Features (Complete Dataset)
+- **566,273 single nuclei** from both head and body tissues
+- **78 distinct cell types** with detailed annotations (40 head + 38 body types)
 - **Multiple age timepoints**: 5, 30, 50, 70 days across lifespan
 - **Sex-stratified data**: Male and female flies analyzed separately  
 - **Rich annotations**: AFCA, FCA, and broad cell type classifications
-- **Pre-computed embeddings**: PCA (50D), t-SNE, and UMAP coordinates
+- **Pre-computed embeddings**: PCA, t-SNE, and UMAP coordinates for both tissues
 - **Quality control metrics**: Comprehensive QC data for all cells
 
 ---
 
 ## 🗂️ Dataset Structure
 
-The processed AFCA head dataset contains optimized parquet files ready for HuggingFace:
+The processed AFCA complete dataset contains optimized parquet files ready for HuggingFace:
 
 ```
 processed/
-├── aging_fly_head_expression.parquet        # Expression matrix (962MB)
-├── aging_fly_head_sample_metadata.parquet   # Cell metadata (5.6MB)
+# HEAD TISSUE
+├── aging_fly_head_expression.parquet        # Head expression matrix (962MB)
+├── aging_fly_head_sample_metadata.parquet   # Head cell metadata (5.6MB)
 ├── aging_fly_head_feature_metadata.parquet  # Gene annotations (220KB)
-├── aging_fly_head_projection_X_pca.parquet  # PCA embeddings (258MB)
-├── aging_fly_head_projection_X_umap.parquet # UMAP coordinates (5.8MB)
-├── aging_fly_head_projection_X_tsne.parquet # t-SNE coordinates (5.8MB)
-└── aging_fly_head_unstructured_metadata.json # Processing metadata (1.4KB)
+├── aging_fly_head_projection_X_pca.parquet  # Head PCA embeddings (258MB)
+├── aging_fly_head_projection_X_umap.parquet # Head UMAP coordinates (5.8MB)
+├── aging_fly_head_projection_X_tsne.parquet # Head t-SNE coordinates (5.8MB)
+├── aging_fly_head_unstructured_metadata.json # Head processing metadata
+
+# BODY TISSUE  
+├── aging_fly_body_expression.parquet        # Body expression matrix (916MB)
+├── aging_fly_body_sample_metadata.parquet   # Body cell metadata (5.5MB)
+├── aging_fly_body_feature_metadata.parquet  # Gene annotations (220KB)
+├── aging_fly_body_projection_X_pca.parquet  # Body PCA embeddings (85MB)
+├── aging_fly_body_projection_X_umap.parquet # Body UMAP coordinates (5.6MB)
+└── aging_fly_body_projection_X_tsne.parquet # Body t-SNE coordinates (5.6MB)
+└── aging_fly_body_unstructured_metadata.json # Body processing metadata
 ```
 
-### Data Dimensions (Head Dataset)
-- **Cells**: ~290,000 single nuclei from head tissue
+### Data Dimensions (Complete Dataset)
+- **Cells**: 566,273 single nuclei (289,981 head + 276,273 body)
 - **Genes**: ~16,000 protein-coding and non-coding genes  
-- **Cell Types**: 40 distinct head cell types
+- **Cell Types**: 78 distinct cell types (40 head + 38 body)
 - **Ages**: Multiple timepoints (5, 30, 50, 70 days across lifespan)
 - **Sexes**: Male and female flies
 - **Annotations**: 3 levels (AFCA, FCA, and broad classifications)
-- **File Size**: 1.2GB total (optimized parquet format)
-
-**Note**: Body dataset processing is in progress and will be added in future release.
+- **File Size**: 2.2GB total (optimized parquet format)
 
 ---
 
@@ -127,24 +149,36 @@ processed/
 from datasets import load_dataset
 import pandas as pd
 
-# Load the AFCA head dataset from HuggingFace
-dataset = load_dataset("longevity-gpt/aging-fly-cell-atlas")
+# Load the complete AFCA dataset from HuggingFace
+dataset = load_dataset("longevity-db/aging-fly-cell-atlas")
 
-# Access the data splits
-expression = dataset['expression'].to_pandas()
-sample_metadata = dataset['sample_metadata'].to_pandas()
-feature_metadata = dataset['feature_metadata'].to_pandas()
-pca_coords = dataset['projection_pca'].to_pandas()
-umap_coords = dataset['projection_umap'].to_pandas()
-tsne_coords = dataset['projection_tsne'].to_pandas()
+# Access HEAD tissue data
+head_expression = dataset['head_expression'].to_pandas()
+head_metadata = dataset['head_sample_metadata'].to_pandas()
+head_features = dataset['head_feature_metadata'].to_pandas()
+head_pca = dataset['head_projection_pca'].to_pandas()
+head_umap = dataset['head_projection_umap'].to_pandas()
 
-print(f"Head dataset: {expression.shape[0]:,} cells × {expression.shape[1]:,} genes")
-print(f"Ages available: {sorted(sample_metadata['age'].unique())}")
-print(f"Cell types: {sample_metadata['afca_annotation'].nunique()}")
+# Access BODY tissue data
+body_expression = dataset['body_expression'].to_pandas()
+body_metadata = dataset['body_sample_metadata'].to_pandas()
+body_features = dataset['body_feature_metadata'].to_pandas()
+body_pca = dataset['body_projection_pca'].to_pandas()
+body_umap = dataset['body_projection_umap'].to_pandas()
 
-# Alternative: Load directly from parquet files
-# expression = pd.read_parquet("aging_fly_head_expression.parquet")
-# sample_metadata = pd.read_parquet("aging_fly_head_sample_metadata.parquet")
+print(f"Head dataset: {head_expression.shape[0]:,} cells × {head_expression.shape[1]:,} genes")
+print(f"Body dataset: {body_expression.shape[0]:,} cells × {body_expression.shape[1]:,} genes")
+print(f"Total cells: {head_expression.shape[0] + body_expression.shape[0]:,}")
+
+# Combine datasets if needed
+import pandas as pd
+combined_metadata = pd.concat([
+    head_metadata.assign(tissue='head'),
+    body_metadata.assign(tissue='body')
+], ignore_index=True)
+
+print(f"Cell types: {combined_metadata['afca_annotation'].nunique()}")
+print(f"Ages available: {sorted(combined_metadata['age'].unique())}")
 ```
 
 ### Aging Analysis Example
